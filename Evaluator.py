@@ -128,30 +128,16 @@ def plot_similarities(filenames, similarities):
     plt.gca().invert_yaxis()  # To display the highest score at the top
     plt.show()
 
+def load_queries_from_file(file_path):
+    """Loads queries from a file."""
+    with open(file_path, 'r', encoding='utf-8') as file:
+        queries = file.readlines()
+    return [query.strip() for query in queries]
+
 if __name__ == "__main__":
 
-    queries = [
-        'anomaly detection',
-        'runtime verification hybrid systems',
-        'formal anomaly detection',
-        'symbolic verification methods',
-        'affine arithmetic decision diagrams',
-        'constraint solvers in safety systems',
-        'formal methods for anomaly detection',
-        'predictive maintenance in cyber-physical systems',
-        'hybrid systems verification',
-        'digital twins for safety-critical systems',
-        'affine form decision trees',
-        'runtime verification of hybrid automata',
-        'formal verification in cyber-physical systems',
-        'machine learning for anomaly detection in embedded systems',
-        'linear constraint solving in verification',
-        'symbolic execution for runtime verification',
-        'formal anomaly detection in embedded systems',
-        'affine constraints in decision diagrams',
-        'runtime monitoring of hybrid systems',
-        'runtime verification with affine arithmetic'
-    ]
+    queries_file_path = "queries.txt"
+    queries = load_queries_from_file(queries_file_path)
 
     folder_name = "all_papers"
     
@@ -194,4 +180,10 @@ if __name__ == "__main__":
         print(f"Rank {rank}: Paper '{filenames[index]}' with similarity {similarity:.4f}")
         print(f"File: {filenames[index]}\n")
 
-    plot_similarities([filenames[i] for i in rankings], [similarities[i] for i in rankings])
+    # Plot only the top 20 results
+    top_n = 20
+    top_indices = rankings[:top_n]
+    top_filenames = [filenames[i] for i in top_indices]
+    top_similarities = [similarities[i] for i in top_indices]
+    
+    plot_similarities(top_filenames, top_similarities)
